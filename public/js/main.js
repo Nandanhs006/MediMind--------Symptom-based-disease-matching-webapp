@@ -3,6 +3,55 @@ let currentIndex = -1;
 let currentSuggestions = [];
 const API_BASE_URL = "http://localhost:5000/api";
 
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById('toggleBtn');
+  const sidebar = document.querySelector('.sidebar');
+
+  if (btn && sidebar) {
+    btn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+
+      if (sidebar.classList.contains('collapsed')) {
+        btn.innerHTML = '>';
+      } else {
+        btn.innerHTML = '<';
+      }
+    });
+  }
+  function startApp() {
+     window.location.href = "search.html";
+  }
+
+  const inputEl = document.getElementById("symptoms");
+
+  if (inputEl) {
+    inputEl.addEventListener("keydown", (e) => {
+      const items = document.querySelectorAll("#suggestions li");
+
+      if (!items.length) return;
+
+      if (e.key === "ArrowDown") {
+        currentIndex = (currentIndex + 1) % items.length;
+      } else if (e.key === "ArrowUp") {
+        currentIndex = (currentIndex - 1 + items.length) % items.length;
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        if (currentSuggestions[currentIndex]) {
+          addSymptom(currentSuggestions[currentIndex]);
+        }
+      }
+
+      items.forEach((el, i) => {
+        el.classList.toggle("active", i === currentIndex);
+      });
+    });
+  }
+
+  if (document.getElementById("results")) {
+    loadResults();
+  }
+});
+
 async function handleInput() {
   const query = document.getElementById("symptoms").value;
 
@@ -55,7 +104,8 @@ function renderSuggestions(data, query) {
 }
 
 function closeSuggestions() {
-  document.getElementById("suggestions").innerHTML = "";
+  const el = document.getElementById("suggestions");
+  if (el) el.innerHTML = "";
 }
 
 document.addEventListener("click", (e) => {
@@ -63,32 +113,6 @@ document.addEventListener("click", (e) => {
     closeSuggestions();
   }
 });
-
-const inputEl = document.getElementById("symptoms");
-
-if (inputEl) {
-  inputEl.addEventListener("keydown", (e) => {
-    const items = document.querySelectorAll("#suggestions li");
-
-    if (!items.length) return;
-
-    if (e.key === "ArrowDown") {
-      currentIndex = (currentIndex + 1) % items.length;
-    } else if (e.key === "ArrowUp") {
-      currentIndex = (currentIndex - 1 + items.length) % items.length;
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (currentSuggestions[currentIndex]) {
-        addSymptom(currentSuggestions[currentIndex]);
-      }
-    }
-
-    items.forEach((el, i) => {
-      el.classList.toggle("active", i === currentIndex);
-    });
-  });
-}
-
 
 function addSymptom(symptom) {
   if (selectedSymptoms.includes(symptom)) return;
@@ -179,8 +203,4 @@ async function loadResults() {
     console.error(err);
     resultsEl.innerHTML = "<li>Unable to reach server. Please try again.</li>";
   }
-}
-
-if (document.getElementById("results")) {
-  window.onload = loadResults;
 }
