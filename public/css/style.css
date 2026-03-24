@@ -6,11 +6,11 @@
 }
 
 body {
-  background-color: #e8dccb;
+  background-color: #9ECAD6;
   color: #5a3e36;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   height: 100vh;
   text-align: center;
 }
@@ -21,37 +21,202 @@ body {
 }
 
 .logo {
-  width: 220px;
-  margin-bottom: 10px;
+  width: 580px;
+  display: block;
+  margin: 10px auto 0;
+}
+
+.logo1 {
+  width: 380px;
+  display: block;
+  margin: 10px auto 0;
 }
 
 h1 {
-  font-size: 64px;
-  color: #f28c8c;
-  letter-spacing: 6px;
-  margin-bottom: 20px;
+  font-size: 48px;
+  color: #748DAE;
+  letter-spacing: 3px;
+  margin-bottom: 15px;
 }
 
 p {
   font-size: 14px;
   line-height: 1.8;
   text-transform: uppercase;
-  margin-bottom: 40px;
 }
 
+#tagline {
+  text-align: left;
+  font-style: italic;
+  color: #748DAE;
+}
+
+/* MAIN INPUT CONTAINER */
+.input-box {
+  width: 550px;
+  height: 130px;
+  margin: 20px auto;
+  border-radius: 30px;
+  background: #FD7979;
+  position: relative;
+  padding-top: 45px;
+}
+
+/* TITLE */
+#inputTitle {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  color: #FEEAC9;
+  font-weight: bold;
+  z-index: 10;
+}
+
+/* TAGS */
+#selected-symptoms {
+  position: absolute;
+  top: 45px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 90%;
+}
+
+.tag {
+  background: #FDACAC;
+  color: #5a3e36;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: pop 0.2s ease;
+}
+
+.tag span {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* INPUT */
+.input-box input {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  border: none;
+  outline: none;
+  padding: 14px;
+  border-radius: 25px;
+  background: #FEEAC9;
+  text-align: center;
+  color: #5a3e36;
+}
+
+input::placeholder {
+  color: #a88;
+}
+
+/* BUTTON */
 button {
-  background: #f28c8c;
+  display: block;
+  margin: 25px auto 10px;
+  background: #FD7979;
   color: #fff;
   border: none;
-  padding: 16px 50px;
+  padding: 14px 40px;
   border-radius: 40px;
-  font-size: 18px;
-  letter-spacing: 3px;
+  font-size: 16px;
+  letter-spacing: 2px;
   cursor: pointer;
   transition: 0.3s;
 }
 
 button:hover {
-  background: #e57474;
+  background: #748DAE;
   transform: scale(1.05);
+}
+
+/* LINKS */
+a {
+  display: inline-block;
+  margin-top: 15px;
+  color: #748DAE;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* RESULTS */
+#results {
+  list-style: none;
+  margin-top: 30px;
+  padding: 0;
+}
+
+#results li {
+  background: #ffffff;
+  width: 500px;
+  margin: 12px auto;
+  padding: 16px 20px;
+  border-radius: 16px;
+  font-size: 16px;
+  color: #5a3e36;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+#results li:hover {
+  transform: scale(1.03);
+}
+
+/* SUGGESTIONS */
+#suggestions {
+  list-style: none;
+  width: 450px;
+  margin: 10px auto;
+  padding: 5px 0;
+  background: #ffffff;
+  border-radius: 12px;
+  max-height: 180px;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  animation: fadeIn 0.2s ease;
+}
+
+#suggestions li {
+  padding: 12px 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: 0.2s;
+}
+
+#suggestions li:hover,
+#suggestions li.active {
+  background: #F5CBCB;
+}
+
+#suggestions:empty {
+  display: none;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }

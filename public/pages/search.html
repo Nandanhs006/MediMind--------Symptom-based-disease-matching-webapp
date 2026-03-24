@@ -7,13 +7,20 @@
 <body>
 
   <div class="container">
-    <h1>Enter Symptoms</h1>
+    <img src="../assets/logo.png" class="logo1" alt="MediMind Logo">
 
-    <input id="symptoms" placeholder="fever, cough, headache">
-    <button onclick="goToResults()">Predict</button>
+    <div class="input-box">
+      <p id="inputTitle">Enter symptoms</p>
+      <div id="selected-symptoms">
+      </div>
+      <input id="symptoms" placeholder="Type symptoms..." oninput="handleInput()">
+    </div>
 
-    <br><br>
-    <a href="index.html">⬅ Back to Home</a>
+    <ul id="suggestions"></ul>
+
+    <button onclick="goToResults()">CHECK</button>
+
+    <a href="index.html">⬅ BACK TO HOME</a>
   </div>
 
   <script src="../js/main.js"></script>

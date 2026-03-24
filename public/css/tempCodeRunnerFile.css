@@ -1,0 +1,10 @@
+#inputTitle {
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: bold;
+  z-index: 10;
+}
