@@ -62,12 +62,6 @@ A web application that helps users explore potential health conditions based on 
 3. **Set up environment variables**
    Create a `.env` file in the root directory:
    ```
-   DB_USER=postgres
-   DB_PASSWORD=your_password
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_NAME=medimind
-   ```
 
 4. **Initialize the database**
    ```bash
