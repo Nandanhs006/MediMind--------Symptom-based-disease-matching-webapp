@@ -1,7 +1,7 @@
 let selectedSymptoms = [];
 let currentIndex = -1;
 let currentSuggestions = [];
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "/api";
 
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById('toggleBtn');
