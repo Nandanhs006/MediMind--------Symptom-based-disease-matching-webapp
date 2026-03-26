@@ -11,8 +11,8 @@ const BASE_PATH = window.location.pathname.includes('/MediMind')
 const IS_GITHUB_PAGES = window.location.hostname === 'nandanhs006.github.io' || 
                          window.location.hostname.includes('github.io');
 
-// For Render: use relative paths, for GitHub Pages: use null
-const API_BASE_URL = IS_GITHUB_PAGES ? null : "/api";
+// For Render: use /api, for GitHub Pages: use null
+const API_BASE_URL = IS_GITHUB_PAGES ? null : window.location.origin + "/api";
 
 // Utility function to get full path for assets
 function getPath(path) {
