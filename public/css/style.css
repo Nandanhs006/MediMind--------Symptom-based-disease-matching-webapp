@@ -242,6 +242,11 @@ a:hover {
   filter: drop-shadow(0 6px 20px #FD7979);
 }
 
+.sidebar a[href="/"] {
+  display: block;
+  text-decoration: none;
+}
+
 .sidebar-links {
   display: flex;
   flex-direction: column;
