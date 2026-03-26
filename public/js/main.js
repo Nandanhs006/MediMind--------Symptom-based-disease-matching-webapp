@@ -1,20 +1,16 @@
 let selectedSymptoms = [];
-let currentIndex = -1;
-let currentSuggestions = [];
+let highlightedIndex = -1;
+let suggestionsList = [];
 
-// Detect base path for GitHub Pages compatibility
 const BASE_PATH = window.location.pathname.includes('/MediMind') 
   ? '/MediMind--------Symptom-based-disease-matching-webapp'
   : '';
 
-// Detect deployment environment
 const IS_GITHUB_PAGES = window.location.hostname === 'nandanhs006.github.io' || 
                          window.location.hostname.includes('github.io');
 
-// For Render: use /api, for GitHub Pages: use null
 const API_BASE_URL = IS_GITHUB_PAGES ? null : window.location.origin + "/api";
 
-// Utility function to get full path for assets
 function getPath(path) {
   return BASE_PATH + path;
 }
@@ -26,39 +22,31 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btn && sidebar) {
     btn.addEventListener('click', () => {
       sidebar.classList.toggle('collapsed');
-
-      if (sidebar.classList.contains('collapsed')) {
-        btn.innerHTML = '>';
-      } else {
-        btn.innerHTML = '<';
-      }
+      btn.innerHTML = sidebar.classList.contains('collapsed') ? '>' : '<';
     });
-  }
-  function startApp() {
-     window.location.href = "search.html";
   }
 
   const inputEl = document.getElementById("symptoms");
 
   if (inputEl) {
-    inputEl.addEventListener("keydown", (e) => {
-      const items = document.querySelectorAll("#suggestions li");
+    inputEl.addEventListener("keydown", (event) => {
+      const suggestionItems = document.querySelectorAll("#suggestions li");
 
-      if (!items.length) return;
+      if (!suggestionItems.length) return;
 
-      if (e.key === "ArrowDown") {
-        currentIndex = (currentIndex + 1) % items.length;
-      } else if (e.key === "ArrowUp") {
-        currentIndex = (currentIndex - 1 + items.length) % items.length;
-      } else if (e.key === "Enter") {
-        e.preventDefault();
-        if (currentSuggestions[currentIndex]) {
-          addSymptom(currentSuggestions[currentIndex]);
+      if (event.key === "ArrowDown") {
+        highlightedIndex = (highlightedIndex + 1) % suggestionItems.length;
+      } else if (event.key === "ArrowUp") {
+        highlightedIndex = (highlightedIndex - 1 + suggestionItems.length) % suggestionItems.length;
+      } else if (event.key === "Enter") {
+        event.preventDefault();
+        if (suggestionsList[highlightedIndex]) {
+          addSymptom(suggestionsList[highlightedIndex]);
         }
       }
 
-      items.forEach((el, i) => {
-        el.classList.toggle("active", i === currentIndex);
+      suggestionItems.forEach((el, i) => {
+        el.classList.toggle("active", i === highlightedIndex);
       });
     });
   }
@@ -82,45 +70,45 @@ async function handleInput() {
   }
 
   try {
-    const res = await fetch(`${API_BASE_URL}/symptoms?q=${encodeURIComponent(query)}`);
-    const data = await res.json();
+    const response = await fetch(`${API_BASE_URL}/symptoms?q=${encodeURIComponent(query)}`);
+    const data = await response.json();
 
-    currentSuggestions = data;
-    currentIndex = -1;
+    suggestionsList = data;
+    highlightedIndex = -1;
 
-    renderSuggestions(data, query);
+    displaySuggestions(data, query);
 
   } catch (err) {
-    console.error(err);
+    console.error('Failed to fetch suggestions:', err);
   }
 }
 
-function renderSuggestions(data, query) {
+function displaySuggestions(data, query) {
   const suggestions = document.getElementById("suggestions");
   suggestions.innerHTML = "";
 
   if (!data.length) {
-    const li = document.createElement("li");
-    li.innerText = "No results found";
-    li.style.opacity = "0.6";
-    suggestions.appendChild(li);
+    const emptyItem = document.createElement("li");
+    emptyItem.innerText = "No results found";
+    emptyItem.style.opacity = "0.6";
+    suggestions.appendChild(emptyItem);
     return;
   }
 
-  const safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const regex = new RegExp(`(${safeQuery})`, "gi");
+  const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const highlightRegex = new RegExp(`(${escapeRegex(query)})`, "gi");
 
   data.forEach((symptom, index) => {
-    const li = document.createElement("li");
+    const item = document.createElement("li");
 
-    li.innerHTML = symptom.replace(regex, "<strong>$1</strong>");
-    li.onclick = () => addSymptom(symptom);
+    item.innerHTML = symptom.replace(highlightRegex, "<strong>$1</strong>");
+    item.onclick = () => addSymptom(symptom);
 
-    if (index === currentIndex) {
-      li.classList.add("active");
+    if (index === highlightedIndex) {
+      item.classList.add("active");
     }
 
-    suggestions.appendChild(li);
+    suggestions.appendChild(item);
   });
 }
 
@@ -139,18 +127,18 @@ function addSymptom(symptom) {
   if (selectedSymptoms.includes(symptom)) return;
 
   selectedSymptoms.push(symptom);
-  renderTags();
+  buildSymptomTags();
 
   document.getElementById("symptoms").value = "";
   closeSuggestions();
 }
 
-function removeSymptom(symptom) {
+function deleteSymptom(symptom) {
   selectedSymptoms = selectedSymptoms.filter(s => s !== symptom);
-  renderTags();
+  buildSymptomTags();
 }
 
-function renderTags() {
+function buildSymptomTags() {
   const container = document.getElementById("selected-symptoms");
   if (!container) return;
 
@@ -161,7 +149,7 @@ function renderTags() {
     tag.className = "tag";
 
     tag.innerHTML = `
-      ${symptom} <span onclick="removeSymptom('${symptom}')">×</span>
+      ${symptom} <span onclick="deleteSymptom('${symptom}')">×</span>
     `;
 
     container.appendChild(tag);
@@ -201,7 +189,7 @@ async function loadResults() {
   resultsEl.innerHTML = "<div style='text-align: center; color: #999; padding: 40px;'>Loading results...</div>";
 
   try {
-    const res = await fetch(`${API_BASE_URL}/predict`, {
+    const response = await fetch(`${API_BASE_URL}/predict`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -209,11 +197,11 @@ async function loadResults() {
       body: JSON.stringify({ symptoms }),
     });
 
-    const data = await res.json();
+    const data = await response.json();
 
-    if (!res.ok) {
-      const message = data.error || data.message || "Failed to fetch prediction results";
-      resultsEl.innerHTML = `<div style='text-align: center; color: red; padding: 40px;'>${message}</div>`;
+    if (!response.ok) {
+      const errorMsg = data.error || data.message || "Failed to fetch prediction results";
+      resultsEl.innerHTML = `<div style='text-align: center; color: red; padding: 40px;'>${errorMsg}</div>`;
       return;
     }
 
@@ -222,7 +210,6 @@ async function loadResults() {
       return;
     }
 
-    // Render results with disease details from library
     resultsEl.innerHTML = data
       .map((item) => {
         const diseaseDetails = getDiseaseData(item.name);
@@ -238,7 +225,7 @@ async function loadResults() {
       })
       .join("");
   } catch (err) {
-    console.error(err);
+    console.error('Failed to load results:', err);
     resultsEl.innerHTML = "<div style='text-align: center; color: red; padding: 40px;'>Unable to reach server. Please try again.</div>";
   }
 }

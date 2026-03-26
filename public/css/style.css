@@ -20,8 +20,6 @@ body {
   margin-top: 20px;
 }
 
-
-/* LOGOS */
 .logo {
   width: 480px;
   display: block;
@@ -44,7 +42,7 @@ body {
   max-width: 650px;
   text-align: justify;
 }
-/* TEXT */
+
 h1 {
   font-size: 48px;
   color: #F8AFA6;
@@ -66,7 +64,6 @@ p {
   color: #9FB3C8;
 }
 
-/* INPUT BOX */
 .input-box {
   width: 550px;
   height: 130px;
@@ -78,7 +75,6 @@ p {
   box-shadow: 0 10px 30px #1E2A38;
 }
 
-/* TITLE */
 #inputTitle {
   position: absolute;
   top: 10px;
@@ -89,7 +85,6 @@ p {
   font-weight: bold;
 }
 
-/* TAGS */
 #selected-symptoms {
   position: absolute;
   top: 40px;
@@ -120,7 +115,6 @@ p {
   font-weight: bold;
 }
 
-/* INPUT */
 .input-box input {
   position: absolute;
   bottom: 12px;
@@ -141,7 +135,6 @@ input::placeholder {
   color: #999;
 }
 
-/* BUTTON */
 button {
   display: block;
   margin: 30px auto 10px;
@@ -164,7 +157,6 @@ button:hover {
   box-shadow: 0 15px 40px #1E2A38;
 }
 
-/* LINKS */
 a {
   display: inline-block;
   margin-top: 15px;
@@ -177,7 +169,6 @@ a:hover {
   text-decoration: underline;
 }
 
-/* SUGGESTIONS */
 #suggestions {
   list-style: none;
   width: 450px;
@@ -202,7 +193,7 @@ a:hover {
   background: #F8AFA6;
   color: #3E5879;
 }
-/* ANIMATIONS */
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
@@ -213,7 +204,6 @@ a:hover {
   to { transform: scale(1); opacity: 1; }
 }
 
-/* SIDEBAR */
 .sidebar {
   position: fixed;
   left: 0;
@@ -253,7 +243,6 @@ a:hover {
   gap: 12px;
 }
 
-/* SIDEBAR LINKS */
 .sidebar a {
   color: #F8AFA6;
   padding: 12px 18px;
@@ -283,7 +272,6 @@ a:hover {
     inset 0 0 0 1px #FD7979;
 }
 
-/* TOGGLE BUTTON */
 .toggle-btn {
   position: fixed;
   top: 50%;
@@ -318,15 +306,11 @@ a:hover {
   display: block;
 }
 
-/* WORK INFO PAGE */
-
-/* Title spacing */
 .container h1 {
   margin-top: 30px;
   margin-bottom: 10px;
 }
 
-/* Description paragraph */
 .description1 {
   font-size: 16px;
   color: #D6D9E0;
@@ -336,12 +320,10 @@ a:hover {
   text-align: justify;
 }
 
-/* Section spacing */
 .section {
   margin-top: 70px;
 }
 
-/* Section headings */
 .section h2 {
   font-size: 26px;
   color: #F8AFA6;
@@ -350,7 +332,6 @@ a:hover {
   text-align: center;
 }
 
-/* Cards layout */
 .cards {
   display: flex;
   justify-content: center;
@@ -359,7 +340,6 @@ a:hover {
   margin-top: 30px;
 }
 
-/* Card design */
 .card {
   width: 280px;
   padding: 25px;
@@ -372,20 +352,17 @@ a:hover {
   transition: 0.3s;
 }
 
-/* Card hover */
 .card:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 50px #1E2A38;
 }
 
-/* Card title */
 .card h3 {
   margin-bottom: 12px;
   color: #FFFFFF;
   font-size: 18px;
 }
 
-/* Card text */
 .card p {
   font-size: 13px;
   line-height: 1.6;
@@ -394,19 +371,16 @@ a:hover {
   margin-bottom: 8px;
 }
 
-/* Card link */
 .card a {
   color: #FFFFFF;
   text-decoration: underline;
 }
 
-/* Fix paragraph uppercase issue for this page */
 .description1,
 .card p {
   text-transform: none;
 }
 
-/* LIBRARY PAGE STYLES */
 .library-container {
   display: flex;
   gap: 20px;
@@ -543,9 +517,7 @@ a:hover {
   }
 }
 
-/* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
-  /* Collapse sidebar by default on mobile */
   .sidebar {
     width: 200px;
     transform: translateX(-100%);
@@ -560,7 +532,6 @@ a:hover {
     z-index: 1000;
   }
 
-  /* Adjust toggle button for mobile */
   .toggle-btn {
     left: 0;
     z-index: 1001;
@@ -571,7 +542,6 @@ a:hover {
     left: 200px;
   }
 
-  /* Ensure content is not offset by sidebar */
   .container {
     margin-left: 0;
     padding: 20px 15px;
@@ -584,7 +554,6 @@ a:hover {
     align-items: flex-start;
   }
 
-  /* Adjust input box for mobile */
   .input-box {
     width: 100%;
     max-width: 100%;
@@ -603,7 +572,6 @@ a:hover {
     bottom: 15px;
   }
 
-  /* Adjust results for mobile */
   .cards {
     flex-direction: column;
     align-items: center;
@@ -615,7 +583,6 @@ a:hover {
     max-width: 280px;
   }
 
-  /* Adjust library container for mobile */
   .library-container {
     flex-direction: column;
   }
@@ -624,18 +591,15 @@ a:hover {
     max-width: 100%;
   }
 
-  /* Adjust button for mobile */
   button {
     width: 100%;
     max-width: 300px;
   }
 
-  /* Adjust heading for mobile */
   h1 {
     font-size: 32px;
   }
 
-  /* Adjust disease details for mobile */
   .disease-details {
     width: 100%;
   }

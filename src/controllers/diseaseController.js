@@ -3,7 +3,6 @@ const pool = require('../config/db');
 const predictDisease = async (req, res) => {
   const { symptoms } = req.body;
 
-  // Validate input
   if (!symptoms || !Array.isArray(symptoms) || symptoms.length === 0) {
     return res.status(400).json({
       error: 'Please provide a valid symptoms array',
@@ -11,8 +10,6 @@ const predictDisease = async (req, res) => {
   }
 
   try {
-    console.log(`[PREDICT] Querying diseases for symptoms: ${symptoms.join(', ')}`);
-    
     const query = `
       SELECT 
         d.id,
@@ -27,28 +24,25 @@ const predictDisease = async (req, res) => {
     `;
 
     const result = await pool.query(query, [symptoms]);
-    console.log(`[PREDICT] Query returned ${result.rows.length} diseases`);
 
-    // Filter + clean response
-    const filtered = result.rows
-      .filter(d => d.match_percentage > 30)
-      .map(d => ({
-        id: d.id,
-        name: d.name,
-        match: parseFloat(d.match_percentage).toFixed(2)
+    const matchedDiseases = result.rows
+      .filter(disease => disease.match_percentage > 30)
+      .map(disease => ({
+        id: disease.id,
+        name: disease.name,
+        match: parseFloat(disease.match_percentage).toFixed(2)
       }));
 
-    if (filtered.length === 0) {
+    if (matchedDiseases.length === 0) {
       return res.status(404).json({
         message: 'No matching diseases found',
       });
     }
 
-    res.json(filtered);
+    res.json(matchedDiseases);
 
   } catch (err) {
-    console.error('[PREDICT] Error:', err.message);
-    console.error('[PREDICT] Stack:', err.stack);
+    console.error('Disease prediction error:', err.message);
     res.status(500).json({
       error: 'Internal server error',
     });

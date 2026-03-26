@@ -1,4 +1,3 @@
-// Comprehensive disease database with descriptions, symptoms, and treatments
 const diseasesDatabase = {
   'Flu': {
     description: 'The flu (influenza) is a contagious respiratory illness caused by influenza viruses. It affects the nose, throat, and lungs, spreading through droplets when infected people cough or sneeze.',
@@ -412,12 +411,10 @@ const diseasesDatabase = {
   }
 };
 
-// For diseases without detailed descriptions, use a template
 function getDiseasesData() {
   return diseasesDatabase;
 }
 
-// Get single disease data
 function getDiseaseData(diseaseName) {
   return diseasesDatabase[diseaseName] || {
     description: 'Medical condition that requires professional diagnosis and treatment.',
