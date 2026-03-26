@@ -542,3 +542,101 @@ a:hover {
     max-height: 300px;
   }
 }
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  /* Collapse sidebar by default on mobile */
+  .sidebar {
+    width: 200px;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.collapsed {
+    transform: translateX(-100%);
+  }
+
+  .sidebar:not(.collapsed) {
+    transform: translateX(0);
+    z-index: 1000;
+  }
+
+  /* Adjust toggle button for mobile */
+  .toggle-btn {
+    left: 0;
+    z-index: 1001;
+    top: 20px;
+  }
+
+  .sidebar:not(.collapsed) ~ .toggle-btn {
+    left: 200px;
+  }
+
+  /* Ensure content is not offset by sidebar */
+  .container {
+    margin-left: 0;
+    padding: 20px 15px;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  body {
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  /* Adjust input box for mobile */
+  .input-box {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    padding-top: 50px;
+    padding-bottom: 20px;
+  }
+
+  #selected-symptoms {
+    width: 95%;
+    top: 45px;
+  }
+
+  .input-box input {
+    width: 95%;
+    bottom: 15px;
+  }
+
+  /* Adjust results for mobile */
+  .cards {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  /* Adjust library container for mobile */
+  .library-container {
+    flex-direction: column;
+  }
+
+  .library-search {
+    max-width: 100%;
+  }
+
+  /* Adjust button for mobile */
+  button {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  /* Adjust heading for mobile */
+  h1 {
+    font-size: 32px;
+  }
+
+  /* Adjust disease details for mobile */
+  .disease-details {
+    width: 100%;
+  }
+}
