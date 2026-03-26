@@ -3,7 +3,7 @@ require('dotenv').config({
   path: process.env.NODE_ENV === 'production' ? '.env' : '.env.development'
 });
 
-// Configure SSL based on environment
+// Configure connection
 const poolConfig = {
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -12,12 +12,8 @@ const poolConfig = {
   port: parseInt(process.env.DB_PORT, 10),
 };
 
-// Add SSL configuration only for Neon cloud (production or when explicitly required)
-// For localhost development, SSL is not needed
-const isNeonCloud = process.env.DB_HOST && process.env.DB_HOST.includes('neon.tech');
-const sslRequired = process.env.DB_SSL === 'require' || (process.env.NODE_ENV === 'production' && isNeonCloud);
-
-if (sslRequired) {
+// Neon cloud always requires SSL
+if (process.env.DB_SSL === 'require') {
   poolConfig.ssl = {
     rejectUnauthorized: false,
   };
