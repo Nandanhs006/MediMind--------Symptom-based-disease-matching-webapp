@@ -94,8 +94,8 @@ MediMind/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/Nandanhs006/MediMind--------Symptom-based-disease-matching-webapp.git
-cd MediMind--------Symptom-based-disease-matching-webapp
+git clone https://github.com/Nandanhs006/MediMind.git
+cd MediMind
 ```
 
 ### 2. Install dependencies
@@ -292,7 +292,7 @@ GitHub: https://github.com/Nandanhs006
 
 ## Live Demo
 
-https://medimind-symptom-disease.onrender.com
+https://medimind-1-ejio.onrender.com
 
 2. **Set up PostgreSQL on Neon**
    - Create account at https://neon.tech
@@ -305,8 +305,6 @@ https://medimind-symptom-disease.onrender.com
    - Connect GitHub repository
    - Set environment variables from Neon database
    - Deploy!
-
-For detailed deployment instructions, see [RENDER_DEPLOYMENT.md](RENDER_DEPLOYMENT.md)
 
 ### Required Environment Variables for Render
 ```
