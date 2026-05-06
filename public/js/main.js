@@ -210,50 +210,28 @@ async function loadResults() {
       return;
     }
 
-<<<<<<< HEAD
-    resultsEl.innerHTML = data
-      .map((item) => {
-        const diseaseDetails = getDiseaseData(item.name);
-        return `
-          <div class="card">
-            <h3 style="color: #FFFFFF; margin-bottom: 8px;">${item.name}</h3>
-            <p style="color: #FFFFFF; font-size: 12px; margin-bottom: 12px;">Match Confidence: <strong>${item.match}%</strong></p>
-            <p style="color: #FFFFFF; font-size: 13px; line-height: 1.5; margin-bottom: 10px;">${diseaseDetails.description || 'N/A'}</p>
-            <p style="color: #FFFFFF; font-size: 12px; margin-bottom: 10px;"><strong>Key Symptoms:</strong> ${diseaseDetails.symptoms ? diseaseDetails.symptoms.slice(0, 3).join(', ') : 'N/A'}</p>
-            <a href="../pages/library.html?disease=${encodeURIComponent(item.name)}" style="color: #FFFFFF; text-decoration: underline; font-weight: 600; font-size: 12px;">View details →</a>
-=======
-    // Add disclaimer at top
-    const disclaimerHTML = `
-      <div style='background: #fff3cd; border: 1px solid #ffc107; border-radius: 6px; padding: 12px; margin-bottom: 20px; color: #856404; font-size: 12px;'>
-        <strong>⚠️ Medical Disclaimer:</strong> This tool is for informational purposes only and should <strong>NOT</strong> replace professional medical advice. Always consult a healthcare provider for accurate diagnosis and treatment.
-      </div>
-    `;
-
     // Separate top match from other matches
     const topMatch = data.find(item => item.isTopMatch);
     const otherMatches = data.filter(item => !item.isTopMatch);
 
-    let resultsHTML = disclaimerHTML;
+    let resultsHTML = '';
 
     // Display top match prominently
     if (topMatch) {
       const diseaseDetails = getDiseaseData(topMatch.name);
-      const confidence = parseFloat(topMatch.confidence);
+      const confidence = parseFloat(topMatch.match || topMatch.confidence || 0);
       const confidenceLevel = topMatch.severity || 'MODERATE';
-      
-      let badgeColor = '#dc3545';
-      if (confidenceLevel === 'VERY HIGH') badgeColor = '#dc3545';
-      else if (confidenceLevel === 'HIGH') badgeColor = '#fd7e14';
-      else if (confidenceLevel === 'MODERATE') badgeColor = '#ffc107';
-      else badgeColor = '#6c757d';
+      const badgeColor = '#ffc107';
+      const borderColor = '#FF6B6B';
+      const barColor = '#00BCD4';
+      const cardBg = 'linear-gradient(135deg, rgba(20, 40, 80, 0.8), rgba(30, 60, 100, 0.8))';
 
       resultsHTML += `
-        <div style="background: linear-gradient(135deg, ${badgeColor}dd, ${badgeColor}bb); border: 3px solid ${badgeColor}; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); transform: scale(1.02);">
+        <div style="background: ${cardBg}; border: 3px solid ${borderColor}; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); transform: scale(1.02);">
           <div style="text-align: center; margin-bottom: 15px;">
-            <span style="background: ${badgeColor}; color: white; padding: 8px 20px; border-radius: 25px; font-size: 14px; font-weight: bold; text-transform: uppercase; display: inline-block;">
-              🎯 MOST LIKELY MATCH
+            <span style="background: ${badgeColor}; color: #333; padding: 8px 20px; border-radius: 25px; font-size: 14px; font-weight: bold; text-transform: uppercase; display: inline-block;">
+              MOST LIKELY MATCH
             </span>
-<<<<<<< HEAD
           </div>
           
           <h2 style="color: #FFFFFF; margin: 15px 0; font-size: 42px; text-align: center; text-transform: uppercase; letter-spacing: 2px;">
@@ -262,7 +240,7 @@ async function loadResults() {
           
           <div style="text-align: center; margin: 20px 0;">
             <div style="background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; height: 12px; max-width: 400px; margin: 0 auto 10px;">
-              <div style="background: ${badgeColor}; height: 100%; width: ${confidence}%; transition: width 0.5s ease;"></div>
+              <div style="background: ${barColor}; height: 100%; width: ${confidence}%; transition: width 0.5s ease;"></div>
             </div>
             <p style="color: #FFFFFF; font-size: 18px; margin: 0; font-weight: bold;">
               ${confidence.toFixed(0)}% MATCH CONFIDENCE
@@ -276,51 +254,18 @@ async function loadResults() {
           
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 25px 0;">
             <div>
-              <p style="color: #FFFFFF; font-size: 13px; margin-bottom: 8px;"><strong>📋 Key Symptoms:</strong></p>
+              <p style="color: #FFFFFF; font-size: 13px; margin-bottom: 8px;"><strong>Key Symptoms:</strong></p>
               <p style="color: rgba(255,255,255,0.9); font-size: 12px;">${diseaseDetails.symptoms ? diseaseDetails.symptoms.slice(0, 4).join(', ') : 'N/A'}</p>
             </div>
             <div>
-              <p style="color: #FFFFFF; font-size: 13px; margin-bottom: 8px;"><strong>💊 Treatment Options:</strong></p>
-              <p style="color: rgba(255,255,255,0.9); font-size: 12px;">${diseaseDetails.treatments ? diseaseDetails.treatments.slice(0, 3).join('; ') : 'N/A'}</p>
-            </div>
->>>>>>> parent of f626f5e (Revert "Enhance results display with prominent top match")
-          </div>
-=======
-          </div>
-          
-          <h2 style="color: #FFFFFF; margin: 15px 0; font-size: 42px; text-align: center; text-transform: uppercase; letter-spacing: 2px;">
-            ${topMatch.name}
-          </h2>
-          
-          <div style="text-align: center; margin: 20px 0;">
-            <div style="background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; height: 12px; max-width: 400px; margin: 0 auto 10px;">
-              <div style="background: ${badgeColor}; height: 100%; width: ${confidence}%; transition: width 0.5s ease;"></div>
-            </div>
-            <p style="color: #FFFFFF; font-size: 18px; margin: 0; font-weight: bold;">
-              ${confidence.toFixed(0)}% MATCH CONFIDENCE
-            </p>
-            <p style="color: rgba(255,255,255,0.9); font-size: 13px; margin: 5px 0 0 0;">
-              Level: <strong>${confidenceLevel}</strong>
-            </p>
-          </div>
-
-          <p style="color: #FFFFFF; font-size: 16px; line-height: 1.6; margin: 20px 0; text-align: center;">${diseaseDetails.description || 'N/A'}</p>
-          
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 25px 0;">
-            <div>
-              <p style="color: #FFFFFF; font-size: 13px; margin-bottom: 8px;"><strong>📋 Key Symptoms:</strong></p>
-              <p style="color: rgba(255,255,255,0.9); font-size: 12px;">${diseaseDetails.symptoms ? diseaseDetails.symptoms.slice(0, 4).join(', ') : 'N/A'}</p>
-            </div>
-            <div>
-              <p style="color: #FFFFFF; font-size: 13px; margin-bottom: 8px;"><strong>💊 Treatment Options:</strong></p>
+              <p style="color: #FFFFFF; font-size: 13px; margin-bottom: 8px;"><strong>Treatment Options:</strong></p>
               <p style="color: rgba(255,255,255,0.9); font-size: 12px;">${diseaseDetails.treatments ? diseaseDetails.treatments.slice(0, 3).join('; ') : 'N/A'}</p>
             </div>
           </div>
->>>>>>> parent of f626f5e (Revert "Enhance results display with prominent top match")
 
           <div style="text-align: center; margin-top: 20px;">
-            <a href="../pages/library.html?disease=${encodeURIComponent(topMatch.name)}" style="background: #FFFFFF; color: ${badgeColor}; text-decoration: none; font-weight: bold; padding: 12px 30px; border-radius: 25px; font-size: 14px; display: inline-block; transition: 0.3s;">
-              📖 View Full Details
+            <a href="../pages/library.html?disease=${encodeURIComponent(topMatch.name)}" style="background: ${badgeColor}; color: #333; text-decoration: none; font-weight: bold; padding: 12px 30px; border-radius: 25px; font-size: 14px; display: inline-block; transition: 0.3s;">
+              View Full Details
             </a>
           </div>
         </div>
@@ -331,7 +276,7 @@ async function loadResults() {
     if (otherMatches.length > 0) {
       resultsHTML += `
         <h3 style="color: #FFFFFF; margin: 30px 0 20px 0; font-size: 18px; text-transform: uppercase; letter-spacing: 1px;">
-          🔍 Other Possible Matches
+          Other Possible Matches
         </h3>
       `;
 
@@ -339,13 +284,9 @@ async function loadResults() {
         .map((item) => {
           const diseaseDetails = getDiseaseData(item.name);
           const confidenceLevel = item.severity || 'MODERATE';
-          const confidence = parseFloat(item.confidence);
+          const confidence = parseFloat(item.match || item.confidence || 0);
           
-          let badgeColor = '#dc3545';
-          if (confidenceLevel === 'VERY HIGH') badgeColor = '#dc3545';
-          else if (confidenceLevel === 'HIGH') badgeColor = '#fd7e14';
-          else if (confidenceLevel === 'MODERATE') badgeColor = '#ffc107';
-          else badgeColor = '#6c757d';
+          let badgeColor = '#ffc107';
 
           return `
             <div class="card" style="border-left: 4px solid ${badgeColor}; opacity: 0.85;">
@@ -378,4 +319,8 @@ async function loadResults() {
     }
 
     resultsEl.innerHTML = resultsHTML;
+  } catch (err) {
+    console.error('Failed to load results:', err);
+    resultsEl.innerHTML = "<div style='text-align: center; color: red; padding: 40px;'>Error loading results. Please try again.</div>";
+  }
 }
