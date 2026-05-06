@@ -292,7 +292,8 @@ async function loadResults() {
 
       resultsHTML += otherMatches
         .map((item) => {
-          const diseaseDetails = getDiseaseData(item.name);
+          try {
+            const diseaseDetails = getDiseaseData(item.name) || {};
           const confidenceLevel = item.severity || 'MODERATE';
           const confidence = parseFloat(item.match || item.confidence || 0);
           
@@ -324,6 +325,10 @@ async function loadResults() {
               </div>
             </div>
           `;
+          } catch (itemError) {
+            console.error('Error processing disease:', item.name, itemError);
+            return '';
+          }
         })
         .join("");
     }
