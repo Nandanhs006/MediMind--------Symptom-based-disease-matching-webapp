@@ -80,16 +80,33 @@ const predictDisease = async (req, res) => {
     });
 
     // Filter by minimum threshold and sort
-    const matchedDiseases = scoredDiseases
-      .filter(disease => disease.confidence >= 25)
-      .sort((a, b) => parseFloat(b.confidence) - parseFloat(a.confidence))
-      .slice(0, 10); // Return top 10 matches
+    const sortedDiseases = scoredDiseases
+      .sort((a, b) => parseFloat(b.confidence) - parseFloat(a.confidence));
+    
+    // More strict filtering - only show diseases with decent match
+    const matchedDiseases = sortedDiseases
+      .filter(disease => disease.confidence >= 40)
+      .slice(0, 6); // Return top 6 matches max
 
     if (matchedDiseases.length === 0) {
-      return res.status(404).json({
-        message: 'No matching diseases found. Please try different symptoms or consult a healthcare provider.',
-      });
+      // If no strong matches, show the best match with lower threshold
+      const anyMatch = sortedDiseases
+        .filter(disease => disease.confidence >= 25)
+        .slice(0, 3);
+      
+      if (anyMatch.length === 0) {
+        return res.status(404).json({
+          message: 'No matching diseases found. Please try different symptoms or consult a healthcare provider.',
+        });
+      }
+
+      // Mark the top result
+      anyMatch[0].isTopMatch = true;
+      return res.json(anyMatch);
     }
+
+    // Mark the top result as primary match
+    matchedDiseases[0].isTopMatch = true;
 
     res.json(matchedDiseases);
 
