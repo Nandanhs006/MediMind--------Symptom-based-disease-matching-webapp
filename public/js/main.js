@@ -265,9 +265,15 @@ async function loadResults() {
             </div>
           </div>
 
-          <div style="text-align: center; margin-top: 20px;">
-            <a href="../pages/library.html?disease=${encodeURIComponent(topMatch.name)}" style="background: ${badgeColor}; color: #333; text-decoration: none; font-weight: bold; padding: 12px 30px; border-radius: 25px; font-size: 14px; display: inline-block; transition: 0.3s;">
-              View Full Details
+          <div style="text-align: center; margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <a href="../pages/library.html?disease=${encodeURIComponent(topMatch.name)}" style="background: ${badgeColor}; color: #333; text-decoration: none; font-weight: bold; padding: 10px 20px; border-radius: 20px; font-size: 13px; display: inline-block; transition: 0.3s;">
+              View Details
+            </a>
+            <a href="https://en.wikipedia.org/wiki/${topMatch.name.replace(/ /g, '_')}" target="_blank" rel="noopener noreferrer" style="background: #4CAF50; color: white; text-decoration: none; font-weight: bold; padding: 10px 20px; border-radius: 20px; font-size: 13px; display: inline-block; transition: 0.3s;">
+              Wikipedia
+            </a>
+            <a href="https://www.google.com/search?q=${encodeURIComponent(topMatch.name)}+medical" target="_blank" rel="noopener noreferrer" style="background: #2196F3; color: white; text-decoration: none; font-weight: bold; padding: 10px 20px; border-radius: 20px; font-size: 13px; display: inline-block; transition: 0.3s;">
+              Google Search
             </a>
           </div>
         </div>
@@ -318,9 +324,15 @@ async function loadResults() {
               
               <p style="color: #FFFFFF; font-size: 11px; margin-bottom: 10px;"><strong>Key Symptoms:</strong> ${diseaseDetails.symptoms ? diseaseDetails.symptoms.slice(0, 3).join(', ') : 'N/A'}</p>
 
-              <div style="margin-top: 10px;">
-                <a href="../pages/library.html?disease=${encodeURIComponent(item.name)}" style="color: #00bfff; text-decoration: none; font-weight: 600; font-size: 11px;">
-                  View details →
+              <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+                <a href="../pages/library.html?disease=${encodeURIComponent(item.name)}" style="color: #ffc107; text-decoration: none; font-weight: 600; font-size: 11px; padding: 4px 8px; border-bottom: 1px solid #ffc107;">
+                  Details
+                </a>
+                <a href="https://en.wikipedia.org/wiki/${item.name.replace(/ /g, '_')}" target="_blank" rel="noopener noreferrer" style="color: #4CAF50; text-decoration: none; font-weight: 600; font-size: 11px; padding: 4px 8px; border-bottom: 1px solid #4CAF50;">
+                  Wiki
+                </a>
+                <a href="https://www.google.com/search?q=${encodeURIComponent(item.name)}+medical" target="_blank" rel="noopener noreferrer" style="color: #2196F3; text-decoration: none; font-weight: 600; font-size: 11px; padding: 4px 8px; border-bottom: 1px solid #2196F3;">
+                  Search
                 </a>
               </div>
             </div>
