@@ -217,119 +217,52 @@ async function loadResults() {
       </div>
     `;
 
-    // Separate top match from other matches
-    const topMatch = data.find(item => item.isTopMatch);
-    const otherMatches = data.filter(item => !item.isTopMatch);
+    resultsEl.innerHTML = disclaimerHTML + data
+      .map((item) => {
+        const diseaseDetails = getDiseaseData(item.name);
+        const confidenceLevel = item.severity || 'MODERATE';
+        const confidence = parseFloat(item.confidence);
+        
+        // Color coding for confidence
+        let badgeColor = '#dc3545'; // red
+        if (confidenceLevel === 'VERY HIGH') badgeColor = '#dc3545';
+        else if (confidenceLevel === 'HIGH') badgeColor = '#fd7e14';
+        else if (confidenceLevel === 'MODERATE') badgeColor = '#ffc107';
+        else badgeColor = '#6c757d';
 
-    let resultsHTML = disclaimerHTML;
-
-    // Display top match prominently
-    if (topMatch) {
-      const diseaseDetails = getDiseaseData(topMatch.name);
-      const confidence = parseFloat(topMatch.confidence);
-      const confidenceLevel = topMatch.severity || 'MODERATE';
-      
-      let badgeColor = '#dc3545';
-      if (confidenceLevel === 'VERY HIGH') badgeColor = '#dc3545';
-      else if (confidenceLevel === 'HIGH') badgeColor = '#fd7e14';
-      else if (confidenceLevel === 'MODERATE') badgeColor = '#ffc107';
-      else badgeColor = '#6c757d';
-
-      resultsHTML += `
-        <div style="background: linear-gradient(135deg, ${badgeColor}dd, ${badgeColor}bb); border: 3px solid ${badgeColor}; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); transform: scale(1.02);">
-          <div style="text-align: center; margin-bottom: 15px;">
-            <span style="background: ${badgeColor}; color: white; padding: 8px 20px; border-radius: 25px; font-size: 14px; font-weight: bold; text-transform: uppercase; display: inline-block;">
-              🎯 MOST LIKELY MATCH
-            </span>
-          </div>
-          
-          <h2 style="color: #FFFFFF; margin: 15px 0; font-size: 42px; text-align: center; text-transform: uppercase; letter-spacing: 2px;">
-            ${topMatch.name}
-          </h2>
-          
-          <div style="text-align: center; margin: 20px 0;">
-            <div style="background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; height: 12px; max-width: 400px; margin: 0 auto 10px;">
-              <div style="background: ${badgeColor}; height: 100%; width: ${confidence}%; transition: width 0.5s ease;"></div>
+        return `
+          <div class="card" style="border-left: 4px solid ${badgeColor};">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+              <h3 style="color: #FFFFFF; margin: 0;">${item.name}</h3>
+              <span style="background: ${badgeColor}; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase;">
+                ${confidence.toFixed(0)}% Match
+              </span>
             </div>
-            <p style="color: #FFFFFF; font-size: 18px; margin: 0; font-weight: bold;">
-              ${confidence.toFixed(0)}% MATCH CONFIDENCE
-            </p>
-            <p style="color: rgba(255,255,255,0.9); font-size: 13px; margin: 5px 0 0 0;">
-              Level: <strong>${confidenceLevel}</strong>
-            </p>
-          </div>
-
-          <p style="color: #FFFFFF; font-size: 16px; line-height: 1.6; margin: 20px 0; text-align: center;">${diseaseDetails.description || 'N/A'}</p>
-          
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 25px 0;">
-            <div>
-              <p style="color: #FFFFFF; font-size: 13px; margin-bottom: 8px;"><strong>📋 Key Symptoms:</strong></p>
-              <p style="color: rgba(255,255,255,0.9); font-size: 12px;">${diseaseDetails.symptoms ? diseaseDetails.symptoms.slice(0, 4).join(', ') : 'N/A'}</p>
-            </div>
-            <div>
-              <p style="color: #FFFFFF; font-size: 13px; margin-bottom: 8px;"><strong>💊 Treatment Options:</strong></p>
-              <p style="color: rgba(255,255,255,0.9); font-size: 12px;">${diseaseDetails.treatments ? diseaseDetails.treatments.slice(0, 3).join('; ') : 'N/A'}</p>
-            </div>
-          </div>
-
-          <div style="text-align: center; margin-top: 20px;">
-            <a href="../pages/library.html?disease=${encodeURIComponent(topMatch.name)}" style="background: #FFFFFF; color: ${badgeColor}; text-decoration: none; font-weight: bold; padding: 12px 30px; border-radius: 25px; font-size: 14px; display: inline-block; transition: 0.3s;">
-              📖 View Full Details
-            </a>
-          </div>
-        </div>
-      `;
-    }
-
-    // Display other matches as secondary options
-    if (otherMatches.length > 0) {
-      resultsHTML += `
-        <h3 style="color: #FFFFFF; margin: 30px 0 20px 0; font-size: 18px; text-transform: uppercase; letter-spacing: 1px;">
-          🔍 Other Possible Matches
-        </h3>
-      `;
-
-      resultsHTML += otherMatches
-        .map((item) => {
-          const diseaseDetails = getDiseaseData(item.name);
-          const confidenceLevel = item.severity || 'MODERATE';
-          const confidence = parseFloat(item.confidence);
-          
-          let badgeColor = '#dc3545';
-          if (confidenceLevel === 'VERY HIGH') badgeColor = '#dc3545';
-          else if (confidenceLevel === 'HIGH') badgeColor = '#fd7e14';
-          else if (confidenceLevel === 'MODERATE') badgeColor = '#ffc107';
-          else badgeColor = '#6c757d';
-
-          return `
-            <div class="card" style="border-left: 4px solid ${badgeColor}; opacity: 0.85;">
-              <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-                <h3 style="color: #FFFFFF; margin: 0; font-size: 16px;">${item.name}</h3>
-                <span style="background: ${badgeColor}; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase;">
-                  ${confidence.toFixed(0)}%
-                </span>
+            
+            <div style="margin-bottom: 12px;">
+              <div style="background: #2a2a2a; border-radius: 4px; overflow: hidden; height: 6px;">
+                <div style="background: ${badgeColor}; height: 100%; width: ${confidence}%;"></div>
               </div>
-              
-              <div style="margin-bottom: 10px;">
-                <div style="background: #2a2a2a; border-radius: 4px; overflow: hidden; height: 5px;">
-                  <div style="background: ${badgeColor}; height: 100%; width: ${confidence}%;"></div>
-                </div>
-              </div>
-
-              <p style="color: #FFFFFF; font-size: 12px; line-height: 1.4; margin-bottom: 10px;">${diseaseDetails.description ? diseaseDetails.description.substring(0, 120) + '...' : 'N/A'}</p>
-              
-              <p style="color: #FFFFFF; font-size: 11px; margin-bottom: 10px;"><strong>Key Symptoms:</strong> ${diseaseDetails.symptoms ? diseaseDetails.symptoms.slice(0, 3).join(', ') : 'N/A'}</p>
-
-              <div style="margin-top: 10px;">
-                <a href="../pages/library.html?disease=${encodeURIComponent(item.name)}" style="color: #00bfff; text-decoration: none; font-weight: 600; font-size: 11px;">
-                  View details →
-                </a>
-              </div>
+              <p style="color: #aaa; font-size: 11px; margin: 4px 0 0 0;">Confidence Level: <strong>${confidenceLevel}</strong></p>
             </div>
-          `;
-        })
-        .join("");
-    }
 
-    resultsEl.innerHTML = resultsHTML;
+            <p style="color: #FFFFFF; font-size: 13px; line-height: 1.5; margin-bottom: 12px;">${diseaseDetails.description || 'N/A'}</p>
+            
+            <p style="color: #FFFFFF; font-size: 12px; margin-bottom: 12px;"><strong>📋 Key Symptoms:</strong> ${diseaseDetails.symptoms ? diseaseDetails.symptoms.slice(0, 3).join(', ') : 'N/A'}</p>
+            
+            <p style="color: #FFFFFF; font-size: 12px; margin-bottom: 12px;"><strong>💊 Treatment Options:</strong> ${diseaseDetails.treatments ? diseaseDetails.treatments.slice(0, 2).join('; ') + '...' : 'N/A'}</p>
+
+            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #444;">
+              <a href="../pages/library.html?disease=${encodeURIComponent(item.name)}" style="color: #00bfff; text-decoration: none; font-weight: 600; font-size: 12px;">
+                📖 View full details →
+              </a>
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+  } catch (err) {
+    console.error('Failed to load results:', err);
+    resultsEl.innerHTML = "<div style='text-align: center; color: red; padding: 40px;'>Unable to reach server. Please try again.</div>";
+  }
 }
