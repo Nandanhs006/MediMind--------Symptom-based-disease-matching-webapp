@@ -219,13 +219,14 @@ async function loadResults() {
 
     // Display top match prominently
     if (topMatch) {
-      const diseaseDetails = getDiseaseData(topMatch.name);
-      confidence = parseFloat(topMatch.match || topMatch.confidence || 0);
-      const confidenceLevel = topMatch.severity || 'MODERATE';
-      const badgeColor = '#ffc107';
-      const borderColor = '#FF6B6B';
-      const barColor = '#00BCD4';
-      const cardBg = 'linear-gradient(135deg, rgba(20, 40, 80, 0.8), rgba(30, 60, 100, 0.8))';
+      try {
+        const diseaseDetails = getDiseaseData(topMatch.name) || {};
+        confidence = parseFloat(topMatch.match || topMatch.confidence || 0);
+        const confidenceLevel = topMatch.severity || 'MODERATE';
+        const badgeColor = '#ffc107';
+        const borderColor = '#FF6B6B';
+        const barColor = '#00BCD4';
+        const cardBg = 'linear-gradient(135deg, rgba(20, 40, 80, 0.8), rgba(30, 60, 100, 0.8))';
 
       resultsHTML += `
         <div style="background: ${cardBg}; border: 3px solid ${borderColor}; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); transform: scale(1.02);">
@@ -271,6 +272,14 @@ async function loadResults() {
           </div>
         </div>
       `;
+      } catch (diseaseError) {
+        console.error('Error processing disease data:', diseaseError);
+        resultsEl.innerHTML = "<div style='text-align: center; color: red; padding: 40px;'>Error loading disease information. Please try again.</div>";
+        return;
+      }
+    } else {
+      resultsEl.innerHTML = "<div style='text-align: center; color: red; padding: 40px;'>No disease match found. Please try different symptoms.</div>";
+      return;
     }
 
     // Display other matches as secondary options (only if confidence is below 85%)
