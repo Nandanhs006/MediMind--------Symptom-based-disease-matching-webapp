@@ -272,8 +272,8 @@ async function loadResults() {
       `;
     }
 
-    // Display other matches as secondary options
-    if (otherMatches.length > 0) {
+    // Display other matches as secondary options (only if confidence is below 85%)
+    if (otherMatches.length > 0 && confidence < 85) {
       resultsHTML += `
         <h3 style="color: #FFFFFF; margin: 30px 0 20px 0; font-size: 18px; text-transform: uppercase; letter-spacing: 1px;">
           Other Possible Matches
