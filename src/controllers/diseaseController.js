@@ -90,6 +90,9 @@ const predictDisease = async (req, res) => {
       // Mark the top result
       anyMatch[0].isTopMatch = true;
       return res.json(anyMatch);
+<<<<<<< HEAD
+>>>>>>> parent of f626f5e (Revert "Enhance results display with prominent top match")
+=======
 >>>>>>> parent of f626f5e (Revert "Enhance results display with prominent top match")
     }
 

@@ -253,6 +253,7 @@ async function loadResults() {
             <span style="background: ${badgeColor}; color: white; padding: 8px 20px; border-radius: 25px; font-size: 14px; font-weight: bold; text-transform: uppercase; display: inline-block;">
               🎯 MOST LIKELY MATCH
             </span>
+<<<<<<< HEAD
           </div>
           
           <h2 style="color: #FFFFFF; margin: 15px 0; font-size: 42px; text-align: center; text-transform: uppercase; letter-spacing: 2px;">
@@ -284,6 +285,38 @@ async function loadResults() {
             </div>
 >>>>>>> parent of f626f5e (Revert "Enhance results display with prominent top match")
           </div>
+=======
+          </div>
+          
+          <h2 style="color: #FFFFFF; margin: 15px 0; font-size: 42px; text-align: center; text-transform: uppercase; letter-spacing: 2px;">
+            ${topMatch.name}
+          </h2>
+          
+          <div style="text-align: center; margin: 20px 0;">
+            <div style="background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; height: 12px; max-width: 400px; margin: 0 auto 10px;">
+              <div style="background: ${badgeColor}; height: 100%; width: ${confidence}%; transition: width 0.5s ease;"></div>
+            </div>
+            <p style="color: #FFFFFF; font-size: 18px; margin: 0; font-weight: bold;">
+              ${confidence.toFixed(0)}% MATCH CONFIDENCE
+            </p>
+            <p style="color: rgba(255,255,255,0.9); font-size: 13px; margin: 5px 0 0 0;">
+              Level: <strong>${confidenceLevel}</strong>
+            </p>
+          </div>
+
+          <p style="color: #FFFFFF; font-size: 16px; line-height: 1.6; margin: 20px 0; text-align: center;">${diseaseDetails.description || 'N/A'}</p>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 25px 0;">
+            <div>
+              <p style="color: #FFFFFF; font-size: 13px; margin-bottom: 8px;"><strong>📋 Key Symptoms:</strong></p>
+              <p style="color: rgba(255,255,255,0.9); font-size: 12px;">${diseaseDetails.symptoms ? diseaseDetails.symptoms.slice(0, 4).join(', ') : 'N/A'}</p>
+            </div>
+            <div>
+              <p style="color: #FFFFFF; font-size: 13px; margin-bottom: 8px;"><strong>💊 Treatment Options:</strong></p>
+              <p style="color: rgba(255,255,255,0.9); font-size: 12px;">${diseaseDetails.treatments ? diseaseDetails.treatments.slice(0, 3).join('; ') : 'N/A'}</p>
+            </div>
+          </div>
+>>>>>>> parent of f626f5e (Revert "Enhance results display with prominent top match")
 
           <div style="text-align: center; margin-top: 20px;">
             <a href="../pages/library.html?disease=${encodeURIComponent(topMatch.name)}" style="background: #FFFFFF; color: ${badgeColor}; text-decoration: none; font-weight: bold; padding: 12px 30px; border-radius: 25px; font-size: 14px; display: inline-block; transition: 0.3s;">
