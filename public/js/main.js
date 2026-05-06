@@ -215,11 +215,12 @@ async function loadResults() {
     const otherMatches = data.filter(item => !item.isTopMatch);
 
     let resultsHTML = '';
+    let confidence = 0;
 
     // Display top match prominently
     if (topMatch) {
       const diseaseDetails = getDiseaseData(topMatch.name);
-      const confidence = parseFloat(topMatch.match || topMatch.confidence || 0);
+      confidence = parseFloat(topMatch.match || topMatch.confidence || 0);
       const confidenceLevel = topMatch.severity || 'MODERATE';
       const badgeColor = '#ffc107';
       const borderColor = '#FF6B6B';
