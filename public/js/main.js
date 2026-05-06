@@ -210,16 +210,53 @@ async function loadResults() {
       return;
     }
 
-    resultsEl.innerHTML = data
+    // Add disclaimer at top
+    const disclaimerHTML = `
+      <div style='background: #fff3cd; border: 1px solid #ffc107; border-radius: 6px; padding: 12px; margin-bottom: 20px; color: #856404; font-size: 12px;'>
+        <strong>⚠️ Medical Disclaimer:</strong> This tool is for informational purposes only and should <strong>NOT</strong> replace professional medical advice. Always consult a healthcare provider for accurate diagnosis and treatment.
+      </div>
+    `;
+
+    resultsEl.innerHTML = disclaimerHTML + data
       .map((item) => {
         const diseaseDetails = getDiseaseData(item.name);
+        const confidenceLevel = item.severity || 'MODERATE';
+        const confidence = parseFloat(item.confidence);
+        
+        // Color coding for confidence
+        let badgeColor = '#dc3545'; // red
+        if (confidenceLevel === 'VERY HIGH') badgeColor = '#dc3545';
+        else if (confidenceLevel === 'HIGH') badgeColor = '#fd7e14';
+        else if (confidenceLevel === 'MODERATE') badgeColor = '#ffc107';
+        else badgeColor = '#6c757d';
+
         return `
-          <div class="card">
-            <h3 style="color: #FFFFFF; margin-bottom: 8px;">${item.name}</h3>
-            <p style="color: #FFFFFF; font-size: 12px; margin-bottom: 12px;">Match Confidence: <strong>${item.match}%</strong></p>
-            <p style="color: #FFFFFF; font-size: 13px; line-height: 1.5; margin-bottom: 10px;">${diseaseDetails.description || 'N/A'}</p>
-            <p style="color: #FFFFFF; font-size: 12px; margin-bottom: 10px;"><strong>Key Symptoms:</strong> ${diseaseDetails.symptoms ? diseaseDetails.symptoms.slice(0, 3).join(', ') : 'N/A'}</p>
-            <a href="../pages/library.html?disease=${encodeURIComponent(item.name)}" style="color: #FFFFFF; text-decoration: underline; font-weight: 600; font-size: 12px;">View details →</a>
+          <div class="card" style="border-left: 4px solid ${badgeColor};">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+              <h3 style="color: #FFFFFF; margin: 0;">${item.name}</h3>
+              <span style="background: ${badgeColor}; color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase;">
+                ${confidence.toFixed(0)}% Match
+              </span>
+            </div>
+            
+            <div style="margin-bottom: 12px;">
+              <div style="background: #2a2a2a; border-radius: 4px; overflow: hidden; height: 6px;">
+                <div style="background: ${badgeColor}; height: 100%; width: ${confidence}%;"></div>
+              </div>
+              <p style="color: #aaa; font-size: 11px; margin: 4px 0 0 0;">Confidence Level: <strong>${confidenceLevel}</strong></p>
+            </div>
+
+            <p style="color: #FFFFFF; font-size: 13px; line-height: 1.5; margin-bottom: 12px;">${diseaseDetails.description || 'N/A'}</p>
+            
+            <p style="color: #FFFFFF; font-size: 12px; margin-bottom: 12px;"><strong>📋 Key Symptoms:</strong> ${diseaseDetails.symptoms ? diseaseDetails.symptoms.slice(0, 3).join(', ') : 'N/A'}</p>
+            
+            <p style="color: #FFFFFF; font-size: 12px; margin-bottom: 12px;"><strong>💊 Treatment Options:</strong> ${diseaseDetails.treatments ? diseaseDetails.treatments.slice(0, 2).join('; ') + '...' : 'N/A'}</p>
+
+            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #444;">
+              <a href="../pages/library.html?disease=${encodeURIComponent(item.name)}" style="color: #00bfff; text-decoration: none; font-weight: 600; font-size: 12px;">
+                📖 View full details →
+              </a>
+            </div>
           </div>
         `;
       })
